@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[114]:
+# In[9]:
 
 
 import pandas as pd
@@ -13,8 +13,19 @@ applications = pd.read_csv("submissions.csv")
 # Create dataframe to store profiles
 profiles = pd.DataFrame(columns = ["name", "contact", "bio", "subjects", "days", "form_name"])
 
+# Read School list
+schools_df = pd.read_csv("schools.csv")
+schools_df = schools_df.set_index("Key")
 
-# In[115]:
+def get_school_dictionary(df):
+    dic = {}
+    for index, row in df.iterrows():
+        dic[index] = row.Name
+    return dic
+schools = get_school_dictionary(schools_df)
+
+
+# In[10]:
 
 
 
@@ -30,7 +41,7 @@ profiles = profiles.set_index("name")
 applications = applications.set_index("Name")
 
 
-# In[116]:
+# In[11]:
 
 
 # List generation functions
@@ -61,7 +72,7 @@ def get_subject_list(string):
         
 
 
-# In[117]:
+# In[12]:
 
 
 # String parseing functions
@@ -88,7 +99,6 @@ def get_school(string):
     ''' Given the input string of the tutors school, check for
         trigger words and output the formated name of that school
     '''
-    schools = {"libertyville": "Libertyville High School", "stevenson":"Stevenson High School", "vernon hills":"Vernon Hills High School", "carmel":"Carmel Catholic High School", "mundelein":"Mundelein High School", "naperville central":"Naperville Central High School", "neuqua":"Neuqua Valley High School", "waubonsie":"Waubonsie Valley High School"}
     for key in schools:
         if re.search(key, string,re.IGNORECASE):
             return schools[key]
@@ -145,7 +155,7 @@ def get_availability(string):
 
 
 
-# In[119]:
+# In[13]:
 
 
 # For every application
@@ -180,17 +190,11 @@ for index, row in applications.iterrows():
     
 
 
-# In[122]:
+# In[14]:
 
 
 
 # Save profiles in csv
 out_name = input("Enter output file name, should be csv: ")
 profiles.to_csv(out_name)
-
-
-# In[ ]:
-
-
-
 
